@@ -12,8 +12,88 @@ import lombok.Data;
 
 @Entity
 @Table(name="Products")
-@Data
+
 public class Products {
+	public Long getProdIdx() {
+		return prodIdx;
+	}
+
+	public void setProdIdx(Long prodIdx) {
+		this.prodIdx = prodIdx;
+	}
+
+	public String getProd_name() {
+		return prod_name;
+	}
+
+	public void setProd_name(String prod_name) {
+		this.prod_name = prod_name;
+	}
+
+	public String getProd_info() {
+		return prod_info;
+	}
+
+	public void setProd_info(String prod_info) {
+		this.prod_info = prod_info;
+	}
+
+	public Long getBid_price() {
+		return bid_price;
+	}
+
+	public void setBid_price(Long bid_price) {
+		this.bid_price = bid_price;
+	}
+
+	public Long getImmediate_price() {
+		return immediate_price;
+	}
+
+	public void setImmediate_price(Long immediate_price) {
+		this.immediate_price = immediate_price;
+	}
+
+	public char getBid_status() {
+		return bid_status;
+	}
+
+	public void setBid_status(char bid_status) {
+		this.bid_status = bid_status;
+	}
+
+	public Timestamp getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Timestamp created_at) {
+		this.created_at = created_at;
+	}
+
+	public Timestamp getEnd_at() {
+		return end_at;
+	}
+
+	public void setEnd_at(Timestamp end_at) {
+		this.end_at = end_at;
+	}
+
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getProd_img_path() {
+		return prod_img_path;
+	}
+
+	public void setProd_img_path(String prod_img_path) {
+		this.prod_img_path = prod_img_path;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="prod_idx")
