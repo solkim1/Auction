@@ -1,5 +1,7 @@
 package com.oggo.auction.model;
 
+import java.security.Timestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,107 +10,119 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "products")
+@Table(name = "Products")
+
 public class Products {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "prod_idx", nullable = false)
-    private Long prodIdx;
+	public Long getProdIdx() {
+		return prodIdx;
+	}
 
-    @Column(name = "prod_name", length = 50, nullable = false)
-    private String prodName;
+	public void setProdIdx(Long prodIdx) {
+		this.prodIdx = prodIdx;
+	}
 
-    @Column(name = "prod_info", length = 255)
-    private String prodInfo;
+	public String getProd_name() {
+		return prod_name;
+	}
 
-    @Column(name = "bid_price")
-    private Integer bidPrice;
+	public void setProd_name(String prod_name) {
+		this.prod_name = prod_name;
+	}
 
-    @Column(name = "immediate_price")
-    private Integer immediatePrice;
+	public String getProd_info() {
+		return prod_info;
+	}
 
-    @Column(name = "bid_status", length = 1)
-    private char bidStatus;
+	public void setProd_info(String prod_info) {
+		this.prod_info = prod_info;
+	}
 
-    @Column(name = "created_at")
-    private String createdAt;
+	public Long getBid_price() {
+		return bid_price;
+	}
 
-    @Column(name = "end_at")
-    private String endAt;
+	public void setBid_price(Long bid_price) {
+		this.bid_price = bid_price;
+	}
 
-    @Column(name = "user_id")
-    private String userId;
+	public Long getImmediate_price() {
+		return immediate_price;
+	}
 
-    // Getters and Setters
-    public Long getProdIdx() {
-        return prodIdx;
-    }
+	public void setImmediate_price(Long immediate_price) {
+		this.immediate_price = immediate_price;
+	}
 
-    public void setProdIdx(Long prodIdx) {
-        this.prodIdx = prodIdx;
-    }
+	public char getBid_status() {
+		return bid_status;
+	}
 
-    public String getProdName() {
-        return prodName;
-    }
+	public void setBid_status(char bid_status) {
+		this.bid_status = bid_status;
+	}
 
-    public void setProdName(String prodName) {
-        this.prodName = prodName;
-    }
+	public Timestamp getCreated_at() {
+		return created_at;
+	}
 
-    public String getProdInfo() {
-        return prodInfo;
-    }
+	public void setCreated_at(Timestamp created_at) {
+		this.created_at = created_at;
+	}
 
-    public void setProdInfo(String prodInfo) {
-        this.prodInfo = prodInfo;
-    }
+	public Timestamp getEnd_at() {
+		return end_at;
+	}
 
-    public Integer getBidPrice() {
-        return bidPrice;
-    }
+	public void setEnd_at(Timestamp end_at) {
+		this.end_at = end_at;
+	}
 
-    public void setBidPrice(Integer bidPrice) {
-        this.bidPrice = bidPrice;
-    }
+	public String getUser_id() {
+		return user_id;
+	}
 
-    public Integer getImmediatePrice() {
-        return immediatePrice;
-    }
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
 
-    public void setImmediatePrice(Integer immediatePrice) {
-        this.immediatePrice = immediatePrice;
-    }
+	public String getProd_img_path() {
+		return prod_img_path;
+	}
 
-    public char getBidStatus() {
-        return bidStatus;
-    }
+	public void setProd_img_path(String prod_img_path) {
+		this.prod_img_path = prod_img_path;
+	}
 
-    public void setBidStatus(char bidStatus) {
-        this.bidStatus = bidStatus;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "prod_idx")
+	private Long prodIdx;
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
+	@Column(name = "prod_name", length = 50)
+	private String prod_name;
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
+	@Column(name = "prod_info")
+	private String prod_info;
 
-    public String getEndAt() {
-        return endAt;
-    }
+	@Column(name = "bid_price")
+	private Long bid_price;
 
-    public void setEndAt(String endAt) {
-        this.endAt = endAt;
-    }
+	@Column(name = "immediate_price")
+	private Long immediate_price;
 
-    public String getUserId() {
-        return userId;
-    }
+	@Column(name = "bid_status", length = 1)
+	private char bid_status;
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	@Column(name = "created_at")
+	private Timestamp created_at;
+
+	@Column(name = "end_at")
+	private Timestamp end_at;
+
+	@Column(name = "user_id", length = 50)
+	private String user_id;
+
+	@Column(name = "prod_img_path", length = 200)
+	private String prod_img_path;
+
 }
