@@ -42,4 +42,7 @@ public class Products {
 	
 	@Column(name="user_id", length = 50)
 	private String user_id;
+	
+	@Column(name="prod_img_path",length = 200)
+	private String prod_img_path;
 }
