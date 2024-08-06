@@ -3,6 +3,8 @@ package com.oggo.auction.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,15 +17,20 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ProdController {
 	
 	@Autowired
-	ProdService service = new ProdService();
+	private ProdService service = new ProdService();
 	
 	@PostMapping(value="/prodCheck")
-	public List<Products> prodCheck() {
+	public ResponseEntity<List<Products>> prodCheck() {
 		
 		System.out.println("프론트에서 상품리스트 데이터 요청 들어옴");
 		
 		List<Products> prodList = service.prodCheck();
+		if(prodList.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(prodList);
+		}else {
+			return ResponseEntity.ok(prodList);
+		}
 		
-		return prodList;
+		
 	}
 }
