@@ -29,6 +29,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/users/login", "/users/join").permitAll();
+            auth.requestMatchers("/static/**", "**").permitAll(); // 정적 리소스 허용
+            auth.requestMatchers("/products/userBidItems").authenticated();
             auth.anyRequest().authenticated();
         });
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

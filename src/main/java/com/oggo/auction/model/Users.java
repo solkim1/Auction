@@ -5,11 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 @Entity
-@Table(name = "users") // 테이블 이름을 명시적으로 지정
+@Table(name = "users")
 public class Users {
-    // Getter and Setter methods
+
     @Id
     @Column(name = "user_id")
     private String userId;
@@ -23,37 +22,37 @@ public class Users {
     @Column(name = "likes")
     private Integer likes = 0;
 
-	public String getUserId() {
-		return userId;
-	}
+    // Getters and setters
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getNickname() {
-		return nickname;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+    public String getNickname() {
+        return nickname;
+    }
 
-	public Integer getLikes() {
-		return likes;
-	}
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-	public void setLikes(Integer likes) {
-		this.likes = likes;
-	}
+    public Integer getLikes() {
+        return likes;
+    }
 
-
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
 }
