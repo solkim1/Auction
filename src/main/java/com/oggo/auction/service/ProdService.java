@@ -19,4 +19,10 @@ public class ProdService {
 		
 		return prodList;
 	}
+	public Products prodDetail(int prodIdx) {
+		
+		Products prodInfo = repository.findByProdIdx(prodIdx);
+		
+		return prodInfo;
+	}
 }
