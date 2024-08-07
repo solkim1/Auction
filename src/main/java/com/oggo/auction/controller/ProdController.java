@@ -1,17 +1,22 @@
 package com.oggo.auction.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oggo.auction.codec.Base64Codec;
 import com.oggo.auction.model.Products;
 import com.oggo.auction.service.ProdService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 public class ProdController {
@@ -19,6 +24,8 @@ public class ProdController {
 	@Autowired
 	private ProdService service = new ProdService();
 
+	
+	// 상품 리스트 조회
 	@PostMapping(value = "/prodCheck")
 	public ResponseEntity<List<Products>> prodCheck() {
 
@@ -34,9 +41,9 @@ public class ProdController {
 
 			try {
 				for (int i = 0; i < prodList.size(); i++) {
-					if (prodList.get(i).getProd_img_path() != null) {
-						String imgByte = Base64Codec.makeStringWithFile(prodList.get(i).getProd_img_path());
-						prodList.get(i).setProd_img_path(imgByte);
+					if (prodList.get(i).getProdImgPath() != null) {
+						String imgByte = Base64Codec.makeStringWithFile(prodList.get(i).getProdImgPath());
+						prodList.get(i).setProdImgPath(imgByte);
 						System.out.println(imgByte);
 					}
 				}
@@ -47,5 +54,14 @@ public class ProdController {
 			return ResponseEntity.ok(prodList);
 		}
 
+	}
+	
+	// 상품 상세정보 조회
+	@PostMapping(value="/prodDetail")
+	public Products prodDetail(@RequestParam("prodIdx") int prodIdx) {
+		System.out.println(prodIdx);
+		Products product = service.prodDetail(prodIdx);
+		System.out.println(product.getProdName());
+		return product;
 	}
 }

@@ -8,11 +8,46 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "Products")
 
 public class Products {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "prod_idx")
+	private Long prodIdx;
+
+	@Column(name = "prod_name", length = 50)
+	private String prodName;
+
+	@Column(name = "prod_info")
+	private String prodInfo;
+
+	@Column(name = "bid_price")
+	private Long bidPrice;
+
+	@Column(name = "immediate_price")
+	private Long immediatePrice;
+
+	@Column(name = "bid_status", length = 1)
+	private char bidStatus;
+
+	@Column(name = "created_at")
+	private Timestamp createdAt;
+
+	@Column(name = "end_at")
+	private Timestamp endAt;
+
+	@Column(name = "user_id", length = 50)
+	private String userId;
+
+	@Column(name = "prod_img_path", length = 200)
+	private String prodImgPath;
+
 	public Long getProdIdx() {
 		return prodIdx;
 	}
@@ -21,108 +56,75 @@ public class Products {
 		this.prodIdx = prodIdx;
 	}
 
-	public String getProd_name() {
-		return prod_name;
+	public String getProdName() {
+		return prodName;
 	}
 
-	public void setProd_name(String prod_name) {
-		this.prod_name = prod_name;
+	public void setProdName(String prodName) {
+		this.prodName = prodName;
 	}
 
-	public String getProd_info() {
-		return prod_info;
+	public String getProdInfo() {
+		return prodInfo;
 	}
 
-	public void setProd_info(String prod_info) {
-		this.prod_info = prod_info;
+	public void setProdInfo(String prodInfo) {
+		this.prodInfo = prodInfo;
 	}
 
-	public Long getBid_price() {
-		return bid_price;
+	public Long getBidPrice() {
+		return bidPrice;
 	}
 
-	public void setBid_price(Long bid_price) {
-		this.bid_price = bid_price;
+	public void setBidPrice(Long bidPrice) {
+		this.bidPrice = bidPrice;
 	}
 
-	public Long getImmediate_price() {
-		return immediate_price;
+	public Long getImmediatePrice() {
+		return immediatePrice;
 	}
 
-	public void setImmediate_price(Long immediate_price) {
-		this.immediate_price = immediate_price;
+	public void setImmediatePrice(Long immediatePrice) {
+		this.immediatePrice = immediatePrice;
 	}
 
-	public char getBid_status() {
-		return bid_status;
+	public char getBidStatus() {
+		return bidStatus;
 	}
 
-	public void setBid_status(char bid_status) {
-		this.bid_status = bid_status;
+	public void setBidStatus(char bidStatus) {
+		this.bidStatus = bidStatus;
 	}
 
-	public Timestamp getCreated_at() {
-		return created_at;
+	public Timestamp getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(Timestamp created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Timestamp getEnd_at() {
-		return end_at;
+	public Timestamp getEndAt() {
+		return endAt;
 	}
 
-	public void setEnd_at(Timestamp end_at) {
-		this.end_at = end_at;
+	public void setEndAt(Timestamp endAt) {
+		this.endAt = endAt;
 	}
 
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public String getProd_img_path() {
-		return prod_img_path;
+	public String getProdImgPath() {
+		return prodImgPath;
 	}
 
-	public void setProd_img_path(String prod_img_path) {
-		this.prod_img_path = prod_img_path;
+	public void setProdImgPath(String prodImgPath) {
+		this.prodImgPath = prodImgPath;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "prod_idx")
-	private Long prodIdx;
-
-	@Column(name = "prod_name", length = 50)
-	private String prod_name;
-
-	@Column(name = "prod_info")
-	private String prod_info;
-
-	@Column(name = "bid_price")
-	private Long bid_price;
-
-	@Column(name = "immediate_price")
-	private Long immediate_price;
-
-	@Column(name = "bid_status", length = 1)
-	private char bid_status;
-
-	@Column(name = "created_at")
-	private Timestamp created_at;
-
-	@Column(name = "end_at")
-	private Timestamp end_at;
-
-	@Column(name = "user_id", length = 50)
-	private String user_id;
-
-	@Column(name = "prod_img_path", length = 200)
-	private String prod_img_path;
-
 }
