@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,9 +30,6 @@ public class UsersController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
     @PostMapping(value = "/join", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> join(@RequestBody Users member) {
         service.join(member);
@@ -43,23 +38,19 @@ public class UsersController {
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> login(@RequestBody Users member) {
-        System.out.println("Received login request: " + member);
-
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(member.getUserId(), member.getPassword()));
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = jwtUtil.createToken(userDetails.getUsername());
+            String token = jwtUtil.createToken(member.getUserId());
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            
+
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
 
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("Login failed for user: " + member.getUserId());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
     }
@@ -68,14 +59,31 @@ public class UsersController {
     public ResponseEntity<List<Users>> getAllUsers() {
         List<Users> users = service.getAllUsers();
         if (users.isEmpty()) {
-            System.out.println("No users found in database.");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(users);
         } else {
-            System.out.println("All users in database:");
-            for (Users user : users) {
-                System.out.println(user);
-            }
             return ResponseEntity.ok(users);
+        }
+    }
+
+    @DeleteMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+        try {
+            service.deleteUser(userId);
+            return ResponseEntity.ok("User deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting user");
+        }
+    }
+
+    @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateProfile(@PathVariable String userId, @RequestBody Map<String, String> updates) {
+        String newPassword = updates.get("password");
+        String newNickname = updates.get("nickname");
+        try {
+            service.updateProfile(userId, newPassword, newNickname);
+            return ResponseEntity.ok("Profile updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating profile");
         }
     }
 }

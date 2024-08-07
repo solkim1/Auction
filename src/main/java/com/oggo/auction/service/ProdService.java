@@ -10,22 +10,31 @@ import com.oggo.auction.repository.ProdRepository;
 @Service
 public class ProdService {
 
-    @Autowired
-    private ProdRepository repository;
+	@Autowired
+	private ProdRepository repository;
 
-    public List<Products> prodCheck() {
-        return repository.findAllByOrderByProdIdxDesc();
-    }
+	public List<Products> prodCheck() {
 
-    public List<Products> findUserBidItems(String buyerId) {
-        List<Object[]> results = repository.findUserBidItemsWithSellerNickname(buyerId);
-        return results.stream()
-                .map(result -> {
-                    Products product = (Products) result[0];
-                    String sellerNickname = (String) result[1];
-                    product.setSellerNickname(sellerNickname);
-                    return product;
-                })
-                .collect(Collectors.toList());
-    }
+		List<Products> prodList = repository.findAllByOrderByProdIdxDesc();
+
+		return prodList;
+	}
+
+	public List<Products> findUserBidItems(String buyerId) {
+		List<Object[]> results = repository.findUserBidItemsWithSellerNickname(buyerId);
+		return results.stream().map(result -> {
+			Products product = (Products) result[0];
+			String sellerNickname = (String) result[1];
+			product.setSellerNickname(sellerNickname);
+			return product;
+		}).collect(Collectors.toList());
+	}
+
+	public Products prodDetail(int prodIdx) {
+
+		Products prodInfo = repository.findByProdIdx(prodIdx);
+
+		return prodInfo;
+	}
+
 }

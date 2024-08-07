@@ -19,4 +19,5 @@ public interface ProdRepository extends JpaRepository<Products, Long> {
 	@Query("SELECT p, u.nickname FROM Products p JOIN Users u ON p.userId = u.userId WHERE p.buyerId = :buyerId AND p.bidStatus = 'Y'")
 	List<Object[]> findUserBidItemsWithSellerNickname(@Param("buyerId") String buyerId);
 
+	Products findByProdIdx(int prodidx);
 }

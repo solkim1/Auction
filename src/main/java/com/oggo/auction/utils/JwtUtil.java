@@ -10,13 +10,12 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String secretKey = "KOREAN-FIRE-JK-DUALIST"; // 비밀 키는 외부 설정이나 환경 변수로 관리하는 것이 좋습니다.
+    private final String secretKey = "KOREAN-FIRE-JK-DUALIST";
 
     public String createToken(String username) {
         Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
-        // 1시간
-        long validityInMilliseconds = 3600000;
+        long validityInMilliseconds = 3600000; // 1시간
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
