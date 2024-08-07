@@ -41,9 +41,9 @@ public class ProdController {
 
 			try {
 				for (int i = 0; i < prodList.size(); i++) {
-					if (prodList.get(i).getProd_img_path() != null) {
-						String imgByte = Base64Codec.makeStringWithFile(prodList.get(i).getProd_img_path());
-						prodList.get(i).setProd_img_path(imgByte);
+					if (prodList.get(i).getProdImgPath() != null) {
+						String imgByte = Base64Codec.makeStringWithFile(prodList.get(i).getProdImgPath());
+						prodList.get(i).setProdImgPath(imgByte);
 						System.out.println(imgByte);
 					}
 				}
@@ -61,7 +61,7 @@ public class ProdController {
 	public Products prodDetail(@RequestParam("prodIdx") int prodIdx) {
 		System.out.println(prodIdx);
 		Products product = service.prodDetail(prodIdx);
-		System.out.println(product.getProd_name());
+		System.out.println(product.getProdName());
 		return product;
 	}
 }
