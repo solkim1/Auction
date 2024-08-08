@@ -51,6 +51,9 @@ public class Products {
 
 	@Column(name = "buyer_id", length = 45)
 	private String buyerId;
+	
+	@Transient
+	private String base64Img;
 
 	@Transient
 	private String sellerNickname;
