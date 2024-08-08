@@ -26,4 +26,9 @@ public class ProfileController {
     public int getCommentCount(@PathVariable String userId) {
         return profileService.getCommentCountByUserId(userId);
     }
+
+    @PostMapping("/likes/increment/{userId}")
+    public Users incrementLikes(@PathVariable String userId) {
+        return usersService.incrementLikes(userId);
+    }
 }

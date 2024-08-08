@@ -21,6 +21,6 @@ public class ProfileService {
     public int getCommentCountByUserId(String userId) {
         return commentRepository.countCommentsByUserId(userId);
     }
-    
-    
+
+
 }
