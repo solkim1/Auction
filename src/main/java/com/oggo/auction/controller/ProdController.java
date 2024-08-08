@@ -2,6 +2,7 @@ package com.oggo.auction.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -142,6 +143,8 @@ public class ProdController {
             Long immediatePrice = Long.valueOf(payload.get("immediatePrice"));
             String userId = payload.get("userId");
             String base64Image = payload.get("prodImgPath");
+            Timestamp createdAt = new Timestamp(Long.parseLong(payload.get("created_at")));
+            Timestamp endAt = new Timestamp(Long.parseLong(payload.get("end_at")));
 
             String imagePath = saveBase64Image(base64Image);
 
@@ -153,6 +156,8 @@ public class ProdController {
             product.setUserId(userId);
             product.setBidStatus('N');
             product.setProdImgPath(IMAGE_URL_PREFIX + imagePath);
+            product.setCreatedAt(createdAt);
+            product.setEndAt(endAt);
 
             service.saveProduct(product);
 
