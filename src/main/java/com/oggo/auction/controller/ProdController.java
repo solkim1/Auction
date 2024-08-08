@@ -2,6 +2,7 @@ package com.oggo.auction.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -32,9 +33,10 @@ public class ProdController {
     private ProdService service;
 
     private final String BASE_IMAGE_PATH = "src/main/resources/static/images/";
-    private final String IMAGE_URL_PREFIX = "http://192.168.219.53:8089/auction/images/";
 
-    // 상품 목록 조회 메서드
+    private final String IMAGE_URL_PREFIX = "/auction/images/";
+
+
     @PostMapping(value = "/prodCheck")
     public ResponseEntity<List<Products>> prodCheck() {
     
@@ -46,24 +48,18 @@ public class ProdController {
             try {
                 for (Products product : prodList) {
                     if (product.getProdImgPath() != null) {
-                        String imgByte = Base64Codec.makeStringWithFile(product.getProdImgPath());
-                        product.setBase64Img(imgByte);
-                        
-                        
-//						System.out.println(imgByte);
-						
-						
-//                        if (prodImgPath.startsWith("/9j/")) {
-//                            // Base64 데이터로부터 파일 생성
-//                            String imagePath = saveBase64Image(prodImgPath);
-//                            String fullUrl = IMAGE_URL_PREFIX + imagePath;
-//                            product.setProdImgPath(fullUrl);
-//                        } else if (!prodImgPath.startsWith("http://") && !prodImgPath.startsWith("https://")) {
-//                            // 파일 경로를 URL로 변환
-//                            String relativePath = prodImgPath.replace(BASE_IMAGE_PATH, "");
-//                            String fullUrl = IMAGE_URL_PREFIX + relativePath;
-//                            product.setProdImgPath(fullUrl);
-//                        }
+
+                        String prodImgPath = product.getProdImgPath();
+                        if (prodImgPath.startsWith("/9j/")) {
+                            String imagePath = saveBase64Image(prodImgPath);
+                            String fullUrl = IMAGE_URL_PREFIX + imagePath;
+                            product.setProdImgPath(fullUrl);
+                        } else if (!prodImgPath.startsWith("/auction/images/")) {
+                            String relativePath = prodImgPath.replace(BASE_IMAGE_PATH, "");
+                            String fullUrl = IMAGE_URL_PREFIX + relativePath;
+                            product.setProdImgPath(fullUrl);
+                        }
+
                     }
                 }
             } catch (Exception e) {
@@ -73,11 +69,11 @@ public class ProdController {
         }
     }
 
-    // 사용자 입찰 상품 조회 메서드
     @PostMapping(value = "/userBidItems", produces = "application/json")
-    public ResponseEntity<List<Products>> userBidItems(@RequestBody Map<String, String> payload, @RequestHeader("Authorization") String authHeader) {
-        // JWT 토큰 검증 (보안 강화)
+    public ResponseEntity<List<Products>> userBidItems(@RequestBody Map<String, String> payload,
+                                                       @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
+
         if (!jwtUtil.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -86,21 +82,18 @@ public class ProdController {
         List<Products> bidItems = service.findUserBidItems(buyerId);
 
         if (bidItems.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(Collections.emptyList()); // 빈 리스트를 반환
         }
 
-        // 이미지 처리 로직
         for (Products product : bidItems) {
             if (product.getProdImgPath() != null) {
                 try {
                     String prodImgPath = product.getProdImgPath();
                     if (prodImgPath.startsWith("/9j/")) {
-                        // Base64 데이터로부터 파일 생성
                         String imagePath = saveBase64Image(prodImgPath);
                         String fullUrl = IMAGE_URL_PREFIX + imagePath;
                         product.setProdImgPath(fullUrl);
-                    } else if (!prodImgPath.startsWith("http://") && !prodImgPath.startsWith("https://")) {
-                        // 파일 경로를 URL로 변환
+                    } else if (!prodImgPath.startsWith("/auction/images/")) {
                         String relativePath = prodImgPath.replace(BASE_IMAGE_PATH, "");
                         String fullUrl = IMAGE_URL_PREFIX + relativePath;
                         product.setProdImgPath(fullUrl);
@@ -141,8 +134,38 @@ public class ProdController {
     public Products prodDetail(@RequestParam("prodIdx") String idx) {
     	int prodIdx = Integer.parseInt(idx);
 //        System.out.println(prodIdx);
+
         Products product = service.prodDetail(prodIdx);
 //        System.out.println(product.getProdName());
         return product;
+    }
+
+    @PostMapping("/prodRegister")
+    public ResponseEntity<String> registerProduct(@RequestBody Map<String, String> payload) {
+        try {
+            String prodName = payload.get("prodName");
+            String prodInfo = payload.get("prodInfo");
+            Long bidPrice = Long.valueOf(payload.get("bidPrice"));
+            Long immediatePrice = Long.valueOf(payload.get("immediatePrice"));
+            String userId = payload.get("userId");
+            String base64Image = payload.get("prodImgPath");
+
+            String imagePath = saveBase64Image(base64Image);
+
+            Products product = new Products();
+            product.setProdName(prodName);
+            product.setProdInfo(prodInfo);
+            product.setBidPrice(bidPrice);
+            product.setImmediatePrice(immediatePrice);
+            product.setUserId(userId);
+            product.setBidStatus('N');
+            product.setProdImgPath(IMAGE_URL_PREFIX + imagePath);
+
+            service.saveProduct(product);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("Product registered successfully");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save image: " + e.getMessage());
+        }
     }
 }

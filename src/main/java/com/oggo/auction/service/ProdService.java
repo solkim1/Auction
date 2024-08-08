@@ -10,31 +10,37 @@ import com.oggo.auction.repository.ProdRepository;
 @Service
 public class ProdService {
 
-	@Autowired
-	private ProdRepository repository;
+    @Autowired
+    private ProdRepository repository;
 
-	public List<Products> prodCheck() {
+    public List<Products> prodCheck() {
+        List<Products> prodList = repository.findAllByOrderByProdIdxDesc();
+        return prodList;
+    }
 
-		List<Products> prodList = repository.findAllByOrderByProdIdxDesc();
 
-		return prodList;
-	}
 
-	public List<Products> findUserBidItems(String buyerId) {
-		List<Object[]> results = repository.findUserBidItemsWithSellerNickname(buyerId);
-		return results.stream().map(result -> {
-			Products product = (Products) result[0];
-			String sellerNickname = (String) result[1];
-			product.setSellerNickname(sellerNickname);
-			return product;
-		}).collect(Collectors.toList());
-	}
+    public List<Products> findUserBidItems(String buyerId) {
+        List<Products> bidItems = repository.findUserBidItems(buyerId);
+        bidItems.forEach(product -> {
+            String sellerNickname = repository.findSellerNicknameByUserId(product.getUserId());
+            System.out.println("Product ID: " + product.getProdIdx() + ", Seller ID: " + product.getUserId() + ", Seller Nickname: " + sellerNickname);
+            if (sellerNickname != null) {
+                product.setSellerNickname(sellerNickname);
+            } else {
+                product.setSellerNickname("알 수 없음");
+            }
+        });
+        return bidItems;
+    }
 
-	public Products prodDetail(int prodIdx) {
 
-		Products prodInfo = repository.findByProdIdx(prodIdx);
-
-		return prodInfo;
-	}
-
+    public Products prodDetail(int prodIdx) {
+        Products prodInfo = repository.findByProdIdx(prodIdx);
+        return prodInfo;
+    }
+    
+    public void saveProduct(Products product) {
+        repository.save(product);
+    }
 }

@@ -10,14 +10,16 @@ import com.oggo.auction.model.Products;
 @Repository
 public interface ProdRepository extends JpaRepository<Products, Long> {
 
-	@Query("SELECT p FROM Products p WHERE p.buyerId = :buyerId AND p.bidStatus = 'Y'")
-	List<Products> findUserBidItems(@Param("buyerId") String buyerId);
 
-	@Query(value="SELECT * FROM products ORDER BY prod_idx DESC",nativeQuery = true)
-	List<Products> findAllByOrderByProdIdxDesc();
 
-	@Query("SELECT p, u.nickname FROM Products p JOIN Users u ON p.userId = u.userId WHERE p.buyerId = :buyerId AND p.bidStatus = 'Y'")
-	List<Object[]> findUserBidItemsWithSellerNickname(@Param("buyerId") String buyerId);
+    @Query("SELECT p FROM Products p ORDER BY p.prodIdx DESC")
+    List<Products> findAllByOrderByProdIdxDesc();
 
-	Products findByProdIdx(int prodidx);
+    Products findByProdIdx(int prodIdx);
+    
+    @Query("SELECT p FROM Products p WHERE p.buyerId = :buyerId AND p.bidStatus = 'Y'")
+    List<Products> findUserBidItems(@Param("buyerId") String buyerId);
+
+    @Query("SELECT u.nickname FROM Users u WHERE u.userId = :userId")
+    String findSellerNicknameByUserId(@Param("userId") String userId);
 }
