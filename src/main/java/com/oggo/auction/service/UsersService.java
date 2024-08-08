@@ -1,13 +1,16 @@
 package com.oggo.auction.service;
 
-import com.oggo.auction.model.Users;
-import com.oggo.auction.repository.UsersRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.oggo.auction.model.Users;
+import com.oggo.auction.repository.UsersRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UsersService {
@@ -45,6 +48,7 @@ public class UsersService {
     }
 
     // 사용자 삭제
+    @Transactional
     public void deleteUser(String userId) {
         Optional<Users> userOptional = repository.findById(userId);
         if (userOptional.isPresent()) {
@@ -54,15 +58,37 @@ public class UsersService {
         }
     }
 
-    // 사용자 정보 업데이트
-    public void updateProfile(String userId, String newPassword, String newNickname) {
-        Users user = repository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    @Transactional
+    public void updateProfile(String oldUserId, String newUserId, String newPassword, String newNickname) {
+        Users user = repository.findByUserId(oldUserId);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        // If the userId is changed, create a new user entry
+        if (newUserId != null && !newUserId.isEmpty() && !oldUserId.equals(newUserId)) {
+            // Create a new user entry
+            Users newUser = new Users();
+            newUser.setUserId(newUserId);
+            newUser.setPassword(user.getPassword());
+            newUser.setNickname(user.getNickname());
+            newUser.setLikes(user.getLikes());
+
+            repository.save(newUser);
+
+            // Delete the old user entry
+            repository.delete(user);
+            return;  // Exit the method to avoid further updates to the old user entry
+        }
+
+        // Update password and nickname if provided
         if (newPassword != null && !newPassword.isEmpty()) {
             user.setPassword(passwordEncoder.encode(newPassword));
         }
         if (newNickname != null && !newNickname.isEmpty()) {
             user.setNickname(newNickname);
         }
+
         repository.save(user);
     }
 }
