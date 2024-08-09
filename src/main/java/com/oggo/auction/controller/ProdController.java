@@ -3,7 +3,6 @@ package com.oggo.auction.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -172,17 +171,25 @@ public class ProdController {
 	}
 
 	@PostMapping("bid")
-	public void bid(@RequestParam("userId") String userId, 
-			@RequestParam("prodIdx") String prodIdx,
+	public void bid(
+			@RequestParam("prodIdx") String prodIdx, 
+			@RequestParam("userId") String userId,
 			@RequestParam("money") String money) {
-		System.out.println(userId);
-		System.out.println(prodIdx);
-		System.out.println(money);
+
+		service.bid(prodIdx, money, userId);
+		
+		System.out.println("성공");
+
 	}
 
 	@PostMapping("buy")
-	public void buy(@RequestParam("userId")String userId) {
-		System.out.println(userId);
+	public void buy(
+			@RequestParam("prodIdx") String prodIdx, 
+			@RequestParam("userId") String userId,
+			@RequestParam("money") String money) {
+		
+		service.buy(prodIdx, money, userId);
+		System.out.println("성공");
 	}
 
 	@PostMapping("/prodRegister")
