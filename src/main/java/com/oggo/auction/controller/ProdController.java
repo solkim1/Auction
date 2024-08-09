@@ -2,6 +2,7 @@ package com.oggo.auction.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -171,23 +172,19 @@ public class ProdController {
 	}
 
 	@PostMapping("bid")
-	public void bid(
-			@RequestParam("prodIdx") String prodIdx, 
-			@RequestParam("userId") String userId,
+	public void bid(@RequestParam("prodIdx") String prodIdx, @RequestParam("userId") String userId,
 			@RequestParam("money") String money) {
 
 		service.bid(prodIdx, money, userId);
-		
+
 		System.out.println("성공");
 
 	}
 
 	@PostMapping("buy")
-	public void buy(
-			@RequestParam("prodIdx") String prodIdx, 
-			@RequestParam("userId") String userId,
+	public void buy(@RequestParam("prodIdx") String prodIdx, @RequestParam("userId") String userId,
 			@RequestParam("money") String money) {
-		
+
 		service.buy(prodIdx, money, userId);
 		System.out.println("성공");
 	}
