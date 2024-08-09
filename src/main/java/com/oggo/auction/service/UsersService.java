@@ -91,4 +91,16 @@ public class UsersService {
 
         repository.save(user);
     }
+
+    @Transactional
+    public Users incrementLikes(String userId) {
+        Users user = repository.findByUserId(userId);
+        if (user != null) {
+            user.setLikes(user.getLikes() + 1);
+            repository.save(user);
+            return user;
+        } else {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+    }
 }

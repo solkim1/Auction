@@ -25,4 +25,7 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date commentedAt;
 
+    @Column(name = "seller_id", nullable = false)
+    private String sellerId;
+
 }
