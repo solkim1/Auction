@@ -36,11 +36,22 @@ public class ProdService {
 
 
     public Products prodDetail(int prodIdx) {
+    	
         Products prodInfo = repository.findByProdIdx(prodIdx);
+        prodInfo.setSellerNickname(repository.findSellerNicknameByUserId(prodInfo.getUserId()));
+        
         return prodInfo;
     }
     
+    
     public void saveProduct(Products product) {
         repository.save(product);
+    }
+    
+    public List<Products> myProd(String userId){
+    	
+    	List<Products> myProdList = repository.findAllByUserIdOrderByProdIdxDesc(userId);
+    	
+    	return myProdList;
     }
 }

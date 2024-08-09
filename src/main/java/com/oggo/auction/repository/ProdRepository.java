@@ -22,4 +22,7 @@ public interface ProdRepository extends JpaRepository<Products, Long> {
 
     @Query("SELECT u.nickname FROM Users u WHERE u.userId = :userId")
     String findSellerNicknameByUserId(@Param("userId") String userId);
+    
+    @Query("SELECT p FROM Products p WHERE p.userId = :userId ORDER BY p.prodIdx DESC")
+    List<Products> findAllByUserIdOrderByProdIdxDesc(@Param("userId") String userId);
 }

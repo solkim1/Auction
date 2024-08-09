@@ -33,7 +33,7 @@ public class SecurityConfig {
 			auth.requestMatchers("/static/**", "**").permitAll(); // 정적 리소스 허용
 			auth.requestMatchers("/products/userBidItems").authenticated();
 
-			auth.requestMatchers("/prodCheck", "/prodList").permitAll();
+			auth.requestMatchers("/prodCheck", "/prodList", "/myProd","/bid","/buy").permitAll();
 
 			auth.anyRequest().authenticated();
 		});
