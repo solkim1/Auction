@@ -10,13 +10,13 @@ import jakarta.persistence.Table;
 public class Users {
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
     @Column(name = "password", length = 60, nullable = false)
     private String password;
 
-    @Column(name = "nickname", length = 50)
+    @Column(name = "nickname", length = 50, nullable = false)
     private String nickname;
 
     @Column(name = "likes")
